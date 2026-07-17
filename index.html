@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Hair Routine</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8b5cf6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Hair Routine">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="pantallaBienvenida" class="bienvenida">
+
+        <div class="bienvenida-card">
+
+            <h1>🌸 Hair Routine</h1>
+
+            <p id="mensajeBienvenida">
+                Bienvenida 💜
+            </p>
+
+            <input
+                type="text"
+                id="nombreUsuario"
+                placeholder="Tu nombre"
+            >
+
+            <button id="btnEntrar">
+                Entrar ✨
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="app">
+
+        <header>
+            <h1>Hair Routine</h1>
+            <button id="btnPermiso">
+                📢 Activar notificaciones
+            </button>
+            <p class="subtitulo">
+                Tu rutina de cuidado capilar
+            </p>
+        </header>
+
+        <section class="resumen">
+
+            <div class="tarjeta">
+                <span class="titulo">Último lavado</span>
+                <h2 id="ultimoLavado">Sin registros</h2>
+            </div>
+
+            <div class="tarjeta">
+                <span class="titulo">Próximo lavado</span>
+                <h2 id="proximoLavado">No programado</h2>
+            </div>
+
+        </section>
+
+        <button id="btnRegistrar">
+            + Registrar lavado
+        </button>
+
+        <section class="calendario-container">
+
+            <div class="cabecera-calendario">
+
+                <button id="mesAnterior">
+                    ◀
+                </button>
+
+                <h2 id="mesActual"></h2>
+
+                <button id="mesSiguiente">
+                    ▶
+                </button>
+
+            </div>
+
+            <div class="dias-semana">
+                <div>L</div>
+                <div>M</div>
+                <div>M</div>
+                <div>J</div>
+                <div>V</div>
+                <div>S</div>
+                <div>D</div>
+            </div>
+
+            <div id="calendario" class="calendario"></div>
+
+        </section>
+        <h2 class="tituloHistorial"> 
+            Historial de lavados 
+        </h2>
+        <div id="historialLavados"></div>
+        <section class="estadisticas">
+            <h2>📊 Estadísticas</h2>
+
+            <div class="estadistica-card">
+                <span>Total de lavados</span>
+                <h3 id="estadisticaTotal">0</h3>
+            </div>
+
+            <div class="estadistica-card">
+                <span>Producto más usado</span>
+                <h3 id="estadisticaProducto">-</h3>
+            </div>
+
+            <div class="estadistica-card">
+                <span>Promedio entre lavados</span>
+                <h3 id="estadisticaPromedio">0 días</h3>
+            </div>
+
+            <div class="estadistica-card">
+                <span>Lavados este mes</span>
+                <h3 id="estadisticaMes">0</h3>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal" id="modalLavado">
+
+        <div class="modal-contenido">
+
+            <h2>Registrar lavado</h2>
+
+            <label>Fecha del lavado</label>
+            <input type="date" id="fechaLavado">
+
+            <label>Productos usados</label>
+            <button id="btnMostrarProductos" class="btnProductos">
+                📦 Seleccionar productos
+            </button>
+
+<div id="listaProductos" style="display:none;"></div>
+            <div id="listaProductos"></div>
+
+            <div class="agregar-producto">
+                <input
+                    type="text"
+                    id="nuevoProducto"
+                    placeholder="Ej: Pantene Reparación"
+                >
+
+                <button id="btnAgregarProducto">
+                    +
+                </button>
+
+                
+            </div>
+            
+
+            <hr>
+
+               <div class="check-group">
+                    <input type="checkbox" id="modoAutomatico" checked>
+                    <label for="modoAutomatico">
+                        Próximo lavado automático
+                    </label>
+                </div>
+                <div id="automatico">
+
+                    <label>
+                        Frecuencia (días)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="frecuenciaDias"
+                        value="3"
+                        min="1"
+                    >
+
+                </div>
+
+                <div id="manual" style="display:none">
+
+                    <label>
+                        Próximo lavado
+                    </label>
+
+                    <input
+                        type="date"
+                        id="proximoLavadoInput"
+                    >
+
+                </div>
+
+            <hr>
+
+            <div class="check-group">
+                <input type="checkbox" id="notificarAntes" checked>
+                <label for="notificarAntes">
+                    Notificar un día antes
+                </label>
+            </div>
+            <div class="check-group">
+                <input type="checkbox" id="notificarHoy" checked>
+                <label for="notificarHoy">
+                    Notificar el mismo día
+                </label>
+            </div>
+
+            <div class="botones-modal">
+                <button id="cancelar">
+                    Cancelar
+                </button>
+
+                <button id="eliminarLavado">
+                    Eliminar
+                </button>
+
+                <button id="guardar">
+                    Guardar
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js")
+                .then(() => {
+                    console.log("Service Worker registrado correctamente");
+                })
+                .catch(error => {
+                    console.log("Error al registrar el Service Worker:", error);
+                });
+        }
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
